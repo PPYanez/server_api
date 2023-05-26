@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"trust-bank/api/db"
@@ -10,30 +9,23 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func GetClients(c *gin.Context) {
+func GetClientInfo(c *gin.Context) {
 	client := db.GetClient()
+
+	numero_identificacion := c.Query("numero_identificacion")
+
+	foundClient := new(models.Client)
+	opts := options.FindOne().SetProjection(bson.D{{"contrasena", 0}})
 	coll := client.Database("trustBank").Collection("Clientes")
-	cur, err := coll.Find(context.TODO(), bson.D{{}})
+	err := coll.FindOne(c, bson.D{{"numero_identificacion", numero_identificacion}}, opts).Decode(&foundClient)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusNotFound, gin.H{"estado": "cliente_no_encontrado"})
 	}
 
-	var clients []models.Client
-
-	for cur.Next(context.TODO()) {
-		var client models.Client
-		err := cur.Decode(&client)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Print(client)
-		clients = append(clients, client)
-	}
-
-	c.JSON(http.StatusOK, gin.H{"clients": clients})
+	c.JSON(http.StatusOK, foundClient)
 }
 
 func Login(c *gin.Context) {

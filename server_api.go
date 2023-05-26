@@ -9,7 +9,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.GET("/api/cliente", routes.GetClients)
+	router.GET("/api/cliente", routes.GetClientInfo)
 	router.POST("/api/inicio_sesion", routes.Login)
 	router.Run() // listen and serve on 0.0.0.0:8080
 }
