@@ -12,3 +12,17 @@ type Client struct {
 	Nacionalidad string `json:"nacionalidad,omitempty" bson:"nacionalidad,omitempty"`
 	Ocupacion string `json:"ocupacion,omitempty" bson:"ocupacion,omitempty"`
 }
+
+type Deposit struct {
+	NumeroCliente string `json:"nro_cliente,omitempty" bson:"nro_cliente,omitempty"`
+	Monto string `json:"monto,omitempty" bson:"monto,omitempty"`
+	Divisa string `json:"divisa,omitempty" bson:"divisa,omitempty"`
+}
+
+type Wallet struct {
+	NumeroCliente string `json:"nro_cliente,omitempty" bson:"nro_cliente,omitempty"`
+	Saldo string `json:"saldo,omitempty" bson:"saldo,omitempty"`
+	Divisa string `json:"divisa,omitempty" bson:"divisa,omitempty"`
+	Nombre string `json:"nombre,omitempty" bson:"nombre,omitempty"`
+	Activo bool `json:"activo,omitempty" bson:"activo,omitempty"`
+}
