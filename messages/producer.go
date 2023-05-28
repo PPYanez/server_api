@@ -1,4 +1,4 @@
-package producer
+package messages
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func RunProducer(message string) {
 
 	err = ch.ExchangeDeclare(
 		"RabbitMQ", // name
-		"fanout",   // type
+		"direct",   // type
 		true,       // durable
 		false,      // auto-deleted
 		false,      // internal
@@ -39,7 +39,7 @@ func RunProducer(message string) {
 
 	err = ch.PublishWithContext(ctx,
 		"RabbitMQ", // exchange
-		"",     // routing key
+		"trustBank",     // routing key
 		false,  // mandatory
 		false,  // immediate
 		amqp.Publishing{
@@ -48,6 +48,4 @@ func RunProducer(message string) {
 		},
 	)
 	failOnError(err, "Failed to publish a message")
-
-	log.Printf(" [x] Sent %s", message)
 }
