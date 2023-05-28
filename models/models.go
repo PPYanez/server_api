@@ -13,16 +13,23 @@ type Client struct {
 	Ocupacion string `json:"ocupacion,omitempty" bson:"ocupacion,omitempty"`
 }
 
-type Deposit struct {
-	NumeroCliente string `json:"nro_cliente,omitempty" bson:"nro_cliente,omitempty"`
-	Monto string `json:"monto,omitempty" bson:"monto,omitempty"`
-	Divisa string `json:"divisa,omitempty" bson:"divisa,omitempty"`
-}
-
 type Wallet struct {
 	NumeroCliente string `json:"nro_cliente,omitempty" bson:"nro_cliente,omitempty"`
 	Saldo string `json:"saldo,omitempty" bson:"saldo,omitempty"`
 	Divisa string `json:"divisa,omitempty" bson:"divisa,omitempty"`
 	Nombre string `json:"nombre,omitempty" bson:"nombre,omitempty"`
 	Activo bool `json:"activo,omitempty" bson:"activo,omitempty"`
+}
+
+type Deposit struct {
+	NumeroCliente string `json:"nro_cliente,omitempty" bson:"nro_cliente,omitempty"`
+	Monto string `json:"monto,omitempty" bson:"monto,omitempty"`
+	Divisa string `json:"divisa,omitempty" bson:"divisa,omitempty"`
+}
+
+type Transfer struct {
+	NumeroClienteOrigen string `json:"nro_cliente_origen,omitempty" bson:"nro_cliente_origen,omitempty"`
+	NumeroClienteDestino string `json:"nro_cliente_destino,omitempty" bson:"nro_cliente_destino,omitempty"`
+	Monto string `json:"monto,omitempty" bson:"monto,omitempty"`
+	Divisa string `json:"divisa,omitempty" bson:"divisa,omitempty"`
 }
