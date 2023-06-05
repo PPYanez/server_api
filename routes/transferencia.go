@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"trust-bank/api/db"
 	"trust-bank/api/messages"
 	"trust-bank/api/models"
@@ -63,7 +64,10 @@ func TransferFunds(c *gin.Context) {
 	}
 
 	// Check if origin wallet has sufficient funds
-	if(transferObject.Monto > foundWallet.Saldo) {
+	montoFloat, _ := strconv.ParseFloat(transferObject.Monto, 32)
+	saldoFloat, _ := strconv.ParseFloat(foundWallet.Saldo, 32)
+
+	if(montoFloat > saldoFloat) {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"estado": "billetera_origen_sin_fondos_suficientes"})
 		return
 	}

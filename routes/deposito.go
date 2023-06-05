@@ -45,7 +45,7 @@ func DepositToWallet(c *gin.Context) {
 	}
 
 	// Send deposit message
-	messages.RunProducer(fmt.Sprintf("deposito %s %s", depositObject.Monto, depositObject.NumeroCliente))
+	messages.RunProducer(fmt.Sprintf("deposit %s %s", depositObject.Monto, depositObject.NumeroCliente))
 
 	c.JSON(http.StatusOK, gin.H{"estado": "deposito_enviado"})
 }
