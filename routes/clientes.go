@@ -48,7 +48,7 @@ func Login(c *gin.Context) {
 	}).Decode(&result)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"estado": " no_exitoso"})
+		c.JSON(http.StatusBadRequest, gin.H{"estado": "no_exitoso"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"estado": "exitoso"})

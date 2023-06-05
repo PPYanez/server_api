@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"trust-bank/api/db"
 	"trust-bank/api/messages"
 	"trust-bank/api/models"
@@ -14,7 +15,7 @@ import (
 
 func WithdrawFromWallet(c *gin.Context) {
 	// Parse request body
-	withdrawObject := new (models.Deposit)
+	withdrawObject := new(models.Deposit)
 	if err := c.BindJSON(&withdrawObject); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err})
 		log.Fatal(err)
@@ -26,7 +27,7 @@ func WithdrawFromWallet(c *gin.Context) {
 
 	// Check if the provided client exists
 	clientColl := mongoClient.Database("trustBank").Collection("Clientes")
-	foundClient := new (models.Client)
+	foundClient := new(models.Client)
 	filter := bson.D{{"numero_identificacion", withdrawObject.NumeroCliente}}
 	err := clientColl.FindOne(c, filter).Decode(&foundClient)
 	if err != nil {
@@ -36,16 +37,18 @@ func WithdrawFromWallet(c *gin.Context) {
 
 	// Check if the provided wallet exists
 	walletColl := mongoClient.Database("trustBank").Collection("Billeteras")
-	foundWallet := new (models.Wallet)
+	foundWallet := new(models.Wallet)
 	filter = bson.D{{"nro_cliente", withdrawObject.NumeroCliente}}
 	err = walletColl.FindOne(c, filter).Decode(&foundWallet)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"estado": "billetera_no_encontrada"})
 		return
 	}
+	montoFloat, _ := strconv.ParseFloat(withdrawObject.Monto, 32)
+	saldoFloat, _ := strconv.ParseFloat(foundWallet.Saldo, 32)
 
 	// Check if wallet has sufficient funds
-	if(withdrawObject.Monto > foundWallet.Saldo) {
+	if montoFloat > saldoFloat {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"estado": "billetera_origen_sin_fondos_suficientes"})
 		return
 	}
